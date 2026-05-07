@@ -17,7 +17,7 @@ app.post('/session/create', (req, res) => {
   res.json({ sessionId: id });
 });
 
-// Join session (optional validation)
+// Join session
 app.post('/session/join', (req, res) => {
   const { sessionId } = req.body;
 
@@ -26,11 +26,6 @@ app.post('/session/join', (req, res) => {
   }
 
   res.json({ success: true });
-});
-
-// Health endpoint (useful for prod tests too)
-app.get('/health', (req, res) => {
-  res.json({ status: "ok" });
 });
 
 // WebSocket logic
@@ -46,22 +41,12 @@ wss.on('connection', (ws, req) => {
   sessions[sessionId].clients.push(ws);
 
   ws.on('message', (message) => {
-    try {
-      const msg = JSON.parse(message);
-
-      // ✅ Echo back (for latency test)
-      ws.send(JSON.stringify({ ...msg, echoed: true }));
-
-      // ✅ Broadcast to others (optional)
-      sessions[sessionId].clients.forEach(client => {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify(msg));
-        }
-      });
-
-    } catch {
-      ws.send(message);
-    }
+    // broadcast to all clients
+    sessions[sessionId].clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
   });
 
   ws.on('close', () => {
