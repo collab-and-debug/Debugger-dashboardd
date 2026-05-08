@@ -68,7 +68,7 @@ function setupWebSocketHandler(server) {
     // Parse sessionId and clientId from query string
     // e.g. ?session=room-abc&client=0
     const url      = new URL(req.url, 'http://localhost');
-   const sessionId = url.searchParams.get('session') || 'default';
+   const sessionId = url.searchParams.get('sessionId') || 'default';
     const clientId  = url.searchParams.get('client')  || 'unknown';
 
     // Add this client to their session
