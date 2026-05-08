@@ -12,7 +12,7 @@ const sessions = {};
 
 // Create session
 app.post('/session/create', (req, res) => {
-  const id = Math.random().toString(36).substring(2, 8);
+  const id = require('crypto').randomUUID();
   sessions[id] = { clients: [] };
   res.json({ sessionId: id });
 });
