@@ -7,7 +7,7 @@ router.post('/create', (req, res) => {
   const sessionId = crypto.randomUUID();
   res.json({
     sessionId,
-    wsUrl: `ws://localhost:${process.env.PORT || 8080}?session=${sessionId}`,
+    wsUrl: `ws://localhost:${process.env.PORT || 8080}?sessionId=${sessionId}`,
     createdAt: Date.now(),
   });
 });
