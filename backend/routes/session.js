@@ -1,6 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const crypto  = require('crypto');
+const { randomUUID } = require('crypto');
 const { sessions } = require('../websocket/handler');
 
 router.post('/create', (req, res) => {
